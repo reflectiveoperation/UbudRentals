@@ -26,8 +26,13 @@ public class MovieRestController {
     }
 
     @GetMapping("/available-movies")
-    public List<Movie> displayAvailableMovies() {
-        return movieService.getAvailableMovies();
+    public List<Movie> displayAvailableMovies(@RequestParam(name = "token",required = true) String token) {
+        if (token.equals(customUserDetailsService.validateApiToken(token).getTokenCode())) {
+            return movieService.getAvailableMovies();
+        } else {
+            return null;
+        }
+
     }
 
     @PostMapping("/rent-movie")

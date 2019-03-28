@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public class DatabaseCustomerRepository implements CustomerRepository {
@@ -39,6 +41,18 @@ public class DatabaseCustomerRepository implements CustomerRepository {
                 .addValue("tokenCode",tokenCode);
         namedParameterJdbcTemplate.update(sqlQueryToInsertToken,namedParameters);
         return tokenCode;
+    }
+
+    @Override
+    public Token validateApiToken(String apiToken) {
+        String sqlQueryToValidateToken = "SELECT token_code FROM api_tokens WHERE token_code = (:apiToken);";
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("apiToken", apiToken);
+        return namedParameterJdbcTemplate.queryForObject(sqlQueryToValidateToken, namedParameters, (resultSet, i) -> {
+            Token token = new Token();
+            token.setTokenCode(resultSet.getString("token_code"));
+            return token;
+        });
     }
 
 

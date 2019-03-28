@@ -68,4 +68,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
+    public Token validateApiToken(String apiToken) {
+        return customerRepository.validateApiToken(apiToken);
+    }
 }
