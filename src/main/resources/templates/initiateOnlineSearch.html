@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <div th:replace="fragments/head :: headFragment"></div>
+    <title>OMDB Search</title>
+</head>
+<body>
+<div th:replace="fragments/navBar :: navBarFragment"></div>
+<div class="w-50 p-3">
+<form th:action="@{/online-search-result}" th:object="${movieSearchRequest}" method="get">
+    <div class="form-group">
+        <label for="movieTitleSearch">Online Movie Search</label>
+        <input type="text" class="form-control" id="movieTitleSearch" aria-describedby="emailHelp" placeholder="Enter Movie Title" th:field="*{title}">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+<div th:replace="fragments/cssScripts :: cssScriptsFragment"></div>
+</body>
+</html>

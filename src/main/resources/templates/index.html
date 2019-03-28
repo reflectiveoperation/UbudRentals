@@ -1,0 +1,23 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <div th:replace="fragments/head :: headFragment"></div>
+    <title>Ubud Rentals</title>
+</head>
+<body>
+<div th:replace="fragments/navBar :: navBarFragment"></div>
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" >
+    <div class="carousel-inner">
+        <div class="carousel-item" th:each="movie : ${movies}">
+            <img th:src="${movie.getPoster()}" class="d-block w-20" alt="...">
+        </div>
+    </div>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script type="text/javascript">
+    document.getElementsByClassName("carousel-item").item(0).setAttribute("class", "carousel-item active");
+</script>
+<div th:replace="fragments/cssScripts :: cssScriptsFragment"></div>
+</body>
+</html>
