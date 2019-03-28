@@ -33,7 +33,7 @@ public class DatabaseCustomerRepository implements CustomerRepository {
 
     @Override
     public String saveTokenInDatabase(String tokenCode) {
-        String sqlQueryToInsertToken = "INSERT INTO api_tokens (token_code" +
+        String sqlQueryToInsertToken = "INSERT INTO api_tokens (token_code)" +
                 "VALUES (:tokenCode);";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("tokenCode",tokenCode);

@@ -32,7 +32,6 @@ public class MovieRestController {
 
     @PostMapping("/rent-movie")
     public Rental rentMovieThroughApi(@RequestBody Movie movie) {
-        customUserDetailsService.createTokenForUser();
         return movieService.rentAMovie(movie.getTitle());
     }
 

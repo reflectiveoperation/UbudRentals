@@ -90,6 +90,13 @@ public class WebController {
         return "onlineSearchResult";
     }
 
+    @GetMapping("/create-token")
+    public String createTokenForRest(Model model) {
+        model.addAttribute("tokenCode", customUserDetailsService.createTokenForUser().getTokenCode());
+        return "createToken";
+    }
+
+
 
 
 }
