@@ -29,22 +29,21 @@ public class MovieRestController {
 
     @GetMapping("/available-movies")
     public ResponseEntity<List<Movie>> displayAvailableMovies(@RequestParam(name = "token", required = true) String token) {
-        try {
-            customUserDetailsService.validateApiToken(token);
-        } catch (InvalidTokenException exc) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+        boolean apiKeyIsValid = customUserDetailsService.validateApiToken(token).getTokenCode().equals(token);
+        if (apiKeyIsValid) {
+            return new ResponseEntity<>(movieService.getAvailableMovies(), HttpStatus.OK);
+        } else {
+            return null;
         }
-        return new ResponseEntity<>(movieService.getAvailableMovies(), HttpStatus.OK);
     }
 
     @PostMapping("/rent-movie")
     public ResponseEntity<Rental> rentMovieThroughApi(@RequestBody Movie movie, @RequestParam(name = "token", required = true) String token) {
-        try {
-            customUserDetailsService.validateApiToken(token);
-        } catch (InvalidTokenException exc) {
-            return new ResponseEntity<>(new Rental(), HttpStatus.UNAUTHORIZED);
+        boolean apiKeyIsValid = customUserDetailsService.validateApiToken(token).getTokenCode().equals(token);
+        if (apiKeyIsValid) {
+            return new ResponseEntity<>(movieService.rentAMovie(movie.getTitle()), HttpStatus.OK);
+        } else {
+            return null;
         }
-        return new ResponseEntity<>(movieService.rentAMovie(movie.getTitle()), HttpStatus.OK);
     }
-
 }
