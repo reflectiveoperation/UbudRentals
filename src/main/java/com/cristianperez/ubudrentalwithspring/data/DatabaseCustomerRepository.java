@@ -1,17 +1,17 @@
 package com.cristianperez.ubudrentalwithspring.data;
 
+import com.cristianperez.ubudrentalwithspring.logic.exceptions.InvalidTokenException;
 import com.cristianperez.ubudrentalwithspring.logic.interfaces.CustomerRepository;
 import com.cristianperez.ubudrentalwithspring.logic.models.Customer;
 import com.cristianperez.ubudrentalwithspring.logic.models.Token;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 
 @Repository
@@ -48,11 +48,15 @@ public class DatabaseCustomerRepository implements CustomerRepository {
         String sqlQueryToValidateToken = "SELECT token_code FROM api_tokens WHERE token_code = (:apiToken);";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("apiToken", apiToken);
-        return namedParameterJdbcTemplate.queryForObject(sqlQueryToValidateToken, namedParameters, (resultSet, i) -> {
-            Token token = new Token();
-            token.setTokenCode(resultSet.getString("token_code"));
-            return token;
-        });
+        try {
+            return namedParameterJdbcTemplate.queryForObject(sqlQueryToValidateToken, namedParameters, (resultSet, i) -> {
+                Token token = new Token();
+                token.setTokenCode(resultSet.getString("token_code"));
+                return token;
+            });
+        } catch (DataAccessException exc) {
+            throw new InvalidTokenException("Invalid Token", exc);
+        }
     }
 
 

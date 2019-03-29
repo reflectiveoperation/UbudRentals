@@ -74,6 +74,12 @@ public class WebController {
         return "successfullyRegistered";
     }
 
+    @GetMapping("/create-token")
+    public String createTokenForRest(Model model) {
+        model.addAttribute("tokenCode", customUserDetailsService.createTokenForUser().getTokenCode());
+        return "createToken";
+    }
+
     //TODO: ONLINE SEARCH BELOW IS THROWING EXCEPTIONS
 
     @GetMapping("/initiate-online-search")
@@ -89,14 +95,5 @@ public class WebController {
         model.addAttribute("movieSearchResult", new MovieSearchRequest());
         return "onlineSearchResult";
     }
-
-    @GetMapping("/create-token")
-    public String createTokenForRest(Model model) {
-        model.addAttribute("tokenCode", customUserDetailsService.createTokenForUser().getTokenCode());
-        return "createToken";
-    }
-
-
-
 
 }

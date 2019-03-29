@@ -1,14 +1,16 @@
 package com.cristianperez.ubudrentalwithspring.presentation;
 
+import com.cristianperez.ubudrentalwithspring.logic.exceptions.InvalidTokenException;
 import com.cristianperez.ubudrentalwithspring.logic.models.Movie;
 import com.cristianperez.ubudrentalwithspring.logic.models.Rental;
-import com.cristianperez.ubudrentalwithspring.logic.services.CustomUserDetails;
 import com.cristianperez.ubudrentalwithspring.logic.services.CustomUserDetailsService;
-import com.cristianperez.ubudrentalwithspring.logic.services.CustomerService;
 import com.cristianperez.ubudrentalwithspring.logic.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,18 +28,23 @@ public class MovieRestController {
     }
 
     @GetMapping("/available-movies")
-    public List<Movie> displayAvailableMovies(@RequestParam(name = "token",required = true) String token) {
-        if (token.equals(customUserDetailsService.validateApiToken(token).getTokenCode())) {
-            return movieService.getAvailableMovies();
-        } else {
-            return null;
+    public ResponseEntity<List<Movie>> displayAvailableMovies(@RequestParam(name = "token", required = true) String token) {
+        try {
+            customUserDetailsService.validateApiToken(token);
+        } catch (InvalidTokenException exc) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
         }
-
+        return new ResponseEntity<>(movieService.getAvailableMovies(), HttpStatus.OK);
     }
 
     @PostMapping("/rent-movie")
-    public Rental rentMovieThroughApi(@RequestBody Movie movie) {
-        return movieService.rentAMovie(movie.getTitle());
+    public ResponseEntity<Rental> rentMovieThroughApi(@RequestBody Movie movie, @RequestParam(name = "token", required = true) String token) {
+        try {
+            customUserDetailsService.validateApiToken(token);
+        } catch (InvalidTokenException exc) {
+            return new ResponseEntity<>(new Rental(), HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(movieService.rentAMovie(movie.getTitle()), HttpStatus.OK);
     }
 
 }
