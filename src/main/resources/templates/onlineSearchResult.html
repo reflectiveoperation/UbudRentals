@@ -16,13 +16,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${movie.empty}">
-            <td colspan="2"> No Movies Available </td>
-        </tr>
         <tr>
             <td><span th:text="${movie.title}"></span></td>
             <td><span th:text="${movie.movieYear}"></span></td>
-            <td><span th:text="${movie.poster}"></span></td>
+            <td><img th:src="${movie.poster}"></td>
         </tr>
         </tbody>
     </table>

@@ -18,6 +18,12 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/display-available-movies">Available Movies<span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/initiate-online-search">Online Movie Search<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/create-token">Obtain our API key<span class="sr-only">(current)</span></a>
+                </li>
             </ul>
 
             <form autocomplete="off" class="form-inline my-2 my-lg-0" th:action="@{/movie-search-result}" th:object="${movieSearchRequest}" method="get">

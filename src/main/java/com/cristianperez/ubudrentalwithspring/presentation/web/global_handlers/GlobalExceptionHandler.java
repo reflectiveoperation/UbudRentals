@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({InvalidTokenException.class})
     public final ResponseEntity<ApiError> handleException(Exception exception, WebRequest webRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
+
         if (exception instanceof InvalidTokenException) {
             HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
             InvalidTokenException invalidTokenException = (InvalidTokenException) exception;

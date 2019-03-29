@@ -28,13 +28,11 @@ public class WebController {
     @GetMapping("/")
     public String ubudRentals(Model model) {
         model.addAttribute("movies", movieService.getAvailableMovies());
-        model.addAttribute("movieSearchRequest", new MovieSearchRequest());
         return "index";
     }
 
     @GetMapping("/search-bar")
     public String searchBar(Model model) {
-        model.addAttribute("movieSearchRequest", new MovieSearchRequest());
         return "searchBar";
     }
 
@@ -42,7 +40,6 @@ public class WebController {
     public String displayMovieSearchInDbResult(@RequestParam(name = "title", required = false) String title, Model model) {
         List<Movie> foundMovies = movieService.searchMoviesByTitle(title);
         model.addAttribute("movies", foundMovies);
-        model.addAttribute("movieSearchRequest", new MovieSearchRequest());
         return "movieSearchResult";
     }
 
@@ -51,7 +48,6 @@ public class WebController {
     public String displayAvailableMovies(Model model) {
         List<Movie> availableMovies = movieService.getAvailableMovies();
         model.addAttribute("movies", availableMovies);
-        model.addAttribute("movieSearchRequest", new MovieSearchRequest());
         return "displayAvailableMovies";
     }
 
@@ -62,14 +58,12 @@ public class WebController {
 
     @GetMapping("/register")
     public String populateRegisterPage(Model model) {
-        model.addAttribute("movieSearchRequest", new MovieSearchRequest());
         model.addAttribute("newUser", new NewUser());
         return "register";
     }
 
     @PostMapping("/successfullyRegistered")
     public String populateSuccessfullyRegistered(Model model, @ModelAttribute NewUser newUser) {
-        model.addAttribute("movieSearchRequest", new MovieSearchRequest());
         customUserDetailsService.registerUser(newUser);
         return "successfullyRegistered";
     }
@@ -80,11 +74,8 @@ public class WebController {
         return "createToken";
     }
 
-    //TODO: ONLINE SEARCH BELOW IS THROWING EXCEPTIONS
-
     @GetMapping("/initiate-online-search")
     public String initiateOnlineSearch(Model model) {
-        model.addAttribute("movieSearchRequest", new MovieSearchRequest());
         return "initiateOnlineSearch";
     }
 
@@ -92,7 +83,6 @@ public class WebController {
     public String searchOmdbDatabase(@RequestParam(name = "title", required = false) String title, Model model) {
         Movie foundMovie = movieService.getMovieInfo(title);
         model.addAttribute("movie", foundMovie);
-        model.addAttribute("movieSearchResult", new MovieSearchRequest());
         return "onlineSearchResult";
     }
 
