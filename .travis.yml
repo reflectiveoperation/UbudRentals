@@ -5,7 +5,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - ./mvnw install -X
+  - ./mvnw install
 
 notifications:
   slack:
